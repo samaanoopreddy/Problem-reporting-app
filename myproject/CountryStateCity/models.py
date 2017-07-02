@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 from django.core.validators import URLValidator
-
+from smart_selects.db_fields import ChainedForeignKey
 from django.db import models
 
 # Create your models here.
@@ -29,4 +29,24 @@ class City(models.Model):
         verbose_name_plural = "Cities"
     def __str__(self):
         return "<"+self.name+">"
+
+
+class University(models.Model):
+    name = models.CharField(max_length=255)
+    website = models.CharField(max_length=255, validators=[URLValidator()], default="")
+
+    established_year = models.DateField()
+
+    country = models.ForeignKey(Country, on_delete=models.CASCADE)
+
+    state = ChainedForeignKey(
+        State, chained_field="country", chained_model_field="country",
+        show_all=False, auto_choose=True, sort=True,null=True,blank = True)
+
+    cities = ChainedForeignKey(
+        City, chained_field="state", chained_model_field="state",
+        show_all=False, auto_choose=True, sort=True,null=True,blank = True)
+
+    def __str__(self):
+        return self.name
 
