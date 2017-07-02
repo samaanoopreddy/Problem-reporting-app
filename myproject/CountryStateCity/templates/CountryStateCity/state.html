@@ -1,0 +1,14 @@
+{%extends 'CountryStateCity/index.html'%}
+{%block head%}
+    <title>states</title>
+{%endblock%}
+{%block body%}
+    <fieldset>
+        <legend>list of states</legend>
+        <ul>
+            {% for item in dic %}
+                <li><a href="state/{{item.id}}">{{item.name}} </a></li>
+            {%endfor%}
+        </ul>
+  </fieldset>
+{%endblock%}
